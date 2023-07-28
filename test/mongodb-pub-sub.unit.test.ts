@@ -25,7 +25,7 @@ const mockEventEmitter = {
   subscribe: subscribeMock
 };
 
-jest.mock('@ofload/mongopubsub', () => {
+jest.mock('@mawhea/mongopubsub', () => {
   return {
     MubSub: jest.fn().mockImplementation(() => {
       return mockEventEmitter;

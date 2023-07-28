@@ -1,6 +1,6 @@
 import { PubSubEngine } from 'graphql-subscriptions';
 import { PubSubAsyncIterator } from './pubsub-async-iterator';
-import { MubSub } from '@ofload/mongopubsub';
+import { MubSub } from '@mawhea/mongopubsub';
 import { Db } from 'mongodb';
 import createDebug from 'debug';
 const debug = createDebug('MongodbPubSub');
