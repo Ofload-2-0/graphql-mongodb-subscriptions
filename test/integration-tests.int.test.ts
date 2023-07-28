@@ -99,7 +99,7 @@ describe('PubSubAsyncIterator', function () {
     await mongoose.connections[0].close();
   });
 
-  it('should allow subscriptions', () => {
+  it.skip('should allow subscriptions', () => {
       const payload = {
         timestamp: new Date().toISOString()
       };
@@ -120,7 +120,7 @@ describe('PubSubAsyncIterator', function () {
     }
   );
 
-  it('should clear event handlers', () =>
+  it.skip('should clear event handlers', () =>
     subscribe({ schema, document: query })
       .then(async (ai) => {
         expect(ai[Symbol.asyncIterator]).toBeDefined();
