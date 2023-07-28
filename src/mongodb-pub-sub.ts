@@ -1,6 +1,6 @@
 import { PubSubEngine } from 'graphql-subscriptions';
 import { PubSubAsyncIterator } from './pubsub-async-iterator';
-import { MubSub } from '@mawhea/mongopubsub';
+import { MubSub } from '@ofload/mongopubsub';
 import { Db } from 'mongodb';
 
 type OnMessage<T> = (message: T) => void
@@ -10,6 +10,7 @@ export type CommonMessageHandler = (message: any) => any;
 export interface MongoPubSubChannelOptions {
   size: number;
   max: number;
+  capped?: boolean
 }
 
 export interface PubSubMongoDbOptions {

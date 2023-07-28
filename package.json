@@ -1,11 +1,11 @@
 {
-  "name": "graphql-mongodb-subscriptions",
-  "version": "1.0.0",
+  "name": "@ofload/graphql-mongodb-subscriptions",
+  "version": "1.0.1",
   "description": "A graphql-subscriptions PubSub Engine using MongoDB",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mjwheatley/graphql-mongodb-subscriptions.git"
+    "url": "https://github.com/jingp-ofload/graphql-mongodb-subscriptions"
   },
   "keywords": [
     "graphql",
@@ -46,7 +46,7 @@
     "prepublishOnly": "npm run test"
   },
   "dependencies": {
-    "@mawhea/mongopubsub": "1.0.0"
+    "@ofload/mongopubsub": "1.0.0"
   },
   "peerDependencies": {
     "graphql-subscriptions": "^1.0.0 || ^2.0.0",
