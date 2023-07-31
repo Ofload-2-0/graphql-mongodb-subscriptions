@@ -1,6 +1,6 @@
 import { PubSubEngine } from 'graphql-subscriptions';
 import { PubSubAsyncIterator } from './pubsub-async-iterator';
-import { MubSub } from '@mawhea/mongopubsub';
+import { MubSub } from '@ofload/mongopubsub';
 import { Db } from 'mongodb';
 
 type OnMessage<T> = (message: T) => void
