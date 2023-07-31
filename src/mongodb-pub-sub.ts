@@ -8,9 +8,9 @@ type OnMessage<T> = (message: T) => void
 export type CommonMessageHandler = (message: any) => any;
 
 export interface MongoPubSubChannelOptions {
-  size: number;
-  max: number;
-  capped?: boolean
+  size?: number;
+  max?: number;
+  capped: boolean
 }
 
 export interface PubSubMongoDbOptions {
@@ -70,7 +70,6 @@ export class MongodbPubSub implements PubSubEngine {
   public subscribe<T = any>(
     trigger: string,
     onMessage: OnMessage<T>,
-    options: unknown = {}
   ): Promise<number> {
     console.log(`MongodbPubSub subscribe()`, { trigger });
     const triggerName: string = trigger;
