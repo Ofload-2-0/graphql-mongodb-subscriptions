@@ -74,7 +74,7 @@ describe('PubSubAsyncIterator', function () {
     try {
       await mongoose.connect(MONGODB_URI);
       console.log('🎉 Connected to database successfully');
-      const connectionDb = mongoose.connections[0].db;
+      const connectionDb = mongoose.connections[0].get('db');
       pubsub = new MongodbPubSub({
         // channelName: `pubsub-integration-test`,
         connectionDb,
