@@ -129,7 +129,7 @@ describe('PubSubAsyncIterator', function () {
           timestamp: new Date().toISOString()
         });
 
-        return (ai as AsyncIterator<any>).return();
+        return (ai as any).return();
       })
       .then((_res) => {
         expect(returnSpy).toHaveBeenCalled();
