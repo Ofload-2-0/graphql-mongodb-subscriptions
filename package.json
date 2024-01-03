@@ -1,6 +1,6 @@
 {
   "name": "@ofload/graphql-mongodb-subscriptions",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A graphql-subscriptions PubSub Engine using MongoDB",
   "main": "dist/index.js",
   "repository": {
@@ -46,11 +46,11 @@
     "prepublishOnly": "npm run test"
   },
   "dependencies": {
-    "@ofload/mongopubsub": "~2.0.1"
+    "@ofload/mongopubsub": "~2.0.3"
   },
   "peerDependencies": {
     "graphql-subscriptions": "^1.0.0 || ^2.0.0",
-    "mongodb": "^5.3.0"
+    "mongodb": "^6.3.0"
   },
   "devDependencies": {
     "@types/graphql": "^14.5.0",
@@ -62,7 +62,6 @@
     "graphql": "^16.8.1",
     "graphql-subscriptions": "^2.0.0",
     "mongoose": "^8.0.3",
-    "mongopubsub": "^1.0.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "tsc-watch": "^6.0.4",
