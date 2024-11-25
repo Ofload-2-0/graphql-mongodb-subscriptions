@@ -49,23 +49,23 @@
     "@ofload/mongopubsub": "~2.0.4"
   },
   "peerDependencies": {
-    "graphql-subscriptions": "^1.0.0 || ^2.0.0",
+    "graphql-subscriptions": "^3.0.0",
     "mongodb": "^6.3.0"
   },
   "devDependencies": {
     "@types/graphql": "^14.5.0",
-    "@types/jest": "^29.5.1",
-    "@types/node": "16.11.7",
+    "@types/jest": "^29.5.14",
+    "@types/node": "22.9.4",
     "@typescript-eslint/eslint-plugin": "^5.36.0",
     "@typescript-eslint/parser": "^5.36.0",
     "eslint": "8.22.0",
-    "graphql": "^16.8.1",
-    "graphql-subscriptions": "^2.0.0",
-    "mongoose": "^8.0.3",
-    "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.1",
-    "tsc-watch": "^6.0.4",
-    "typescript": "^5.3.3"
+    "graphql": "^16.9.0",
+    "graphql-subscriptions": "^3.0.0",
+    "mongoose": "^8.8.2",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsc-watch": "^6.2.1",
+    "typescript": "^5.7.2"
   },
   "typings": "dist/index.d.ts",
   "typescript": {

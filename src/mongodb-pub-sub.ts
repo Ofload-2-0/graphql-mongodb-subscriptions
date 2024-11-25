@@ -2,6 +2,7 @@ import { PubSubEngine } from 'graphql-subscriptions';
 import { PubSubAsyncIterator } from './pubsub-async-iterator';
 import { MubSub } from '@ofload/mongopubsub';
 import { Db } from 'mongodb';
+import { PubSubAsyncIterableIterator } from 'graphql-subscriptions/dist/pubsub-async-iterable-iterator';
 
 type OnMessage<T> = (message: T) => void
 
@@ -27,7 +28,6 @@ const defaultCommonMessageHandler: CommonMessageHandler = (message: any) => {
 };
 
 export class MongodbPubSub implements PubSubEngine {
-  private channelName: string;
   private channel: MubSub;
   private commonMessageHandler: CommonMessageHandler;
 
@@ -46,11 +46,9 @@ export class MongodbPubSub implements PubSubEngine {
     this.subscriptionMap = {};
     this.subsRefsMap = new Map<string, Set<number>>();
     this.currentSubscriptionId = 0;
-    this.channelName = channelName;
+
     this.commonMessageHandler = commonMessageHandler || defaultCommonMessageHandler;
 
-    // this.client = mongopubsub(connectionDb);
-    // this.channel = this.client.channel(this.channelName, channelOptions);
     this.channel = new MubSub({ mongoDb: connectionDb, ...channelOptions, name: channelName });
     if (connectionListener) {
       this.channel.on('error', (error: any) => {
@@ -63,7 +61,7 @@ export class MongodbPubSub implements PubSubEngine {
   }
 
   public async publish<T>(trigger: string, payload: T): Promise<void> {
-    console.log(`MongodbPubSub publish()`, { trigger, payload });
+    console.log('MongodbPubSub publish()', { trigger, payload });
     await this.channel.publish({ event: trigger, message: payload });
   }
 
@@ -71,7 +69,7 @@ export class MongodbPubSub implements PubSubEngine {
     trigger: string,
     onMessage: OnMessage<T>,
   ): Promise<number> {
-    console.log(`MongodbPubSub subscribe()`, { trigger });
+    console.log('MongodbPubSub subscribe()', { trigger });
     const triggerName: string = trigger;
     const id = this.currentSubscriptionId++;
     const callback = (message) => {
@@ -118,6 +116,10 @@ export class MongodbPubSub implements PubSubEngine {
 
   public asyncIterator<T>(triggers: string | string[], options?: unknown): AsyncIterator<T> {
     return new PubSubAsyncIterator<T>(this, triggers, options);
+  }
+
+  public asyncIterableIterator<T>(triggers: string | string[]): PubSubAsyncIterableIterator<T> {
+    return new PubSubAsyncIterableIterator<T>(this, triggers);
   }
 
   public close() {
