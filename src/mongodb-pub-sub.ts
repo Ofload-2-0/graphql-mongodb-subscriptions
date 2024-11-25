@@ -1,18 +1,17 @@
-import { PubSubEngine } from 'graphql-subscriptions';
-import { PubSubAsyncIterator } from './pubsub-async-iterator';
-import { MubSub } from '@ofload/mongopubsub';
-import { Db } from 'mongodb';
-import createDebug from 'debug';
-const debug = createDebug('MongodbPubSub');
+import { PubSubEngine } from "graphql-subscriptions";
+import { PubSubAsyncIterator } from "./pubsub-async-iterator";
+import { MubSub } from "@ofload/mongopubsub";
+import { Db } from "mongodb";
+import { PubSubAsyncIterableIterator } from "graphql-subscriptions/dist/pubsub-async-iterable-iterator";
 
-type OnMessage<T> = (message: T) => void
+type OnMessage<T> = (message: T) => void;
 
 export type CommonMessageHandler = (message: any) => any;
 
 export interface MongoPubSubChannelOptions {
   size?: number;
   max?: number;
-  capped: boolean
+  capped: boolean;
 }
 
 export interface PubSubMongoDbOptions {
@@ -29,7 +28,6 @@ const defaultCommonMessageHandler: CommonMessageHandler = (message: any) => {
 };
 
 export class MongodbPubSub implements PubSubEngine {
-  private channelName: string;
   private channel: MubSub;
   private commonMessageHandler: CommonMessageHandler;
 
@@ -43,19 +41,22 @@ export class MongodbPubSub implements PubSubEngine {
       channelName,
       channelOptions,
       connectionListener,
-      commonMessageHandler
+      commonMessageHandler,
     } = options;
     this.subscriptionMap = {};
     this.subsRefsMap = new Map<string, Set<number>>();
     this.currentSubscriptionId = 0;
-    this.channelName = channelName;
-    this.commonMessageHandler = commonMessageHandler || defaultCommonMessageHandler;
 
-    // this.client = mongopubsub(connectionDb);
-    // this.channel = this.client.channel(this.channelName, channelOptions);
-    this.channel = new MubSub({ mongoDb: connectionDb, ...channelOptions, name: channelName });
+    this.commonMessageHandler =
+      commonMessageHandler || defaultCommonMessageHandler;
+
+    this.channel = new MubSub({
+      mongoDb: connectionDb,
+      ...channelOptions,
+      name: channelName,
+    });
     if (connectionListener) {
-      this.channel.on('error', (error: any) => {
+      this.channel.on("error", (error: any) => {
         connectionListener(`error`, error);
       });
       this.channel.on(`ready`, (data) => {
@@ -65,26 +66,27 @@ export class MongodbPubSub implements PubSubEngine {
   }
 
   public async publish<T>(trigger: string, payload: T): Promise<void> {
-    debug(`MongodbPubSub publish()`, { trigger, payload });
+    console.log("MongodbPubSub publish()", { trigger, payload });
     await this.channel.publish({ event: trigger, message: payload });
   }
 
   public subscribe<T = any>(
     trigger: string,
-    onMessage: OnMessage<T>,
+    onMessage: OnMessage<T>
   ): Promise<number> {
-    debug(`MongodbPubSub subscribe()`, { trigger });
+    console.log("MongodbPubSub subscribe()", { trigger });
     const triggerName: string = trigger;
     const id = this.currentSubscriptionId++;
     const callback = (message) => {
       debug(`MongodbPubSub subscription callback[${id}]`, message);
       onMessage(
-        message instanceof Error
-          ? message
-          : this.commonMessageHandler(message)
+        message instanceof Error ? message : this.commonMessageHandler(message)
       );
     };
-    const subscription = this.channel.subscribe({ event: triggerName, callback });
+    const subscription = this.channel.subscribe({
+      event: triggerName,
+      callback,
+    });
     debug(`subscription[${id}]`, `trigger[${triggerName}]`);
 
     this.subscriptionMap[id] = [triggerName, subscription];
@@ -101,7 +103,8 @@ export class MongodbPubSub implements PubSubEngine {
   public unsubscribe(subId: number): void {
     debug(`MongodbPubSub.unsubscribe()`, `subId[${subId}]`);
     debug(`MongodbPubSub subscriptionMap`, this.subscriptionMap);
-    const [triggerName = null, subscription] = this.subscriptionMap[subId] || [];
+    const [triggerName = null, subscription] =
+      this.subscriptionMap[subId] || [];
     const refs = this.subsRefsMap.get(triggerName);
 
     if (!subscription) {
@@ -118,8 +121,17 @@ export class MongodbPubSub implements PubSubEngine {
     delete this.subscriptionMap[subId];
   }
 
-  public asyncIterator<T>(triggers: string | string[], options?: unknown): AsyncIterator<T> {
+  public asyncIterator<T>(
+    triggers: string | string[],
+    options?: unknown
+  ): AsyncIterator<T> {
     return new PubSubAsyncIterator<T>(this, triggers, options);
+  }
+
+  public asyncIterableIterator<T>(
+    triggers: string | string[]
+  ): PubSubAsyncIterableIterator<T> {
+    return new PubSubAsyncIterableIterator<T>(this, triggers);
   }
 
   public close() {
