@@ -23,7 +23,6 @@ export interface PubSubMongoDbOptions {
 }
 
 const defaultCommonMessageHandler: CommonMessageHandler = (message: any) => {
-  debug(`MongodbPubSub.defaultCommonMessageHandler()`, message);
   return message;
 };
 
@@ -78,7 +77,6 @@ export class MongodbPubSub implements PubSubEngine {
     const triggerName: string = trigger;
     const id = this.currentSubscriptionId++;
     const callback = (message) => {
-      debug(`MongodbPubSub subscription callback[${id}]`, message);
       onMessage(
         message instanceof Error ? message : this.commonMessageHandler(message)
       );
@@ -87,7 +85,6 @@ export class MongodbPubSub implements PubSubEngine {
       event: triggerName,
       callback,
     });
-    debug(`subscription[${id}]`, `trigger[${triggerName}]`);
 
     this.subscriptionMap[id] = [triggerName, subscription];
 
@@ -101,8 +98,6 @@ export class MongodbPubSub implements PubSubEngine {
   }
 
   public unsubscribe(subId: number): void {
-    debug(`MongodbPubSub.unsubscribe()`, `subId[${subId}]`);
-    debug(`MongodbPubSub subscriptionMap`, this.subscriptionMap);
     const [triggerName = null, subscription] =
       this.subscriptionMap[subId] || [];
     const refs = this.subsRefsMap.get(triggerName);
