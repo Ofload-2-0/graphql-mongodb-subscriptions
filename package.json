@@ -1,6 +1,6 @@
 {
   "name": "@ofload/graphql-mongodb-subscriptions",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "A graphql-subscriptions PubSub Engine using MongoDB",
   "main": "dist/index.js",
   "repository": {
@@ -46,26 +46,26 @@
     "prepublishOnly": "npm run test"
   },
   "dependencies": {
-    "@ofload/mongopubsub": "~2.0.4"
+    "@ofload/mongopubsub": "~3.0.1"
   },
   "peerDependencies": {
     "graphql-subscriptions": "^3.0.0",
-    "mongodb": "^6.3.0"
+    "mongodb": "^7.0.0"
   },
   "devDependencies": {
     "@types/graphql": "^14.5.0",
-    "@types/jest": "^29.5.14",
-    "@types/node": "22.9.4",
-    "@typescript-eslint/eslint-plugin": "^5.36.0",
-    "@typescript-eslint/parser": "^5.36.0",
-    "eslint": "8.22.0",
-    "graphql": "^16.9.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "25.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
+    "eslint": "10.0.1",
+    "graphql": "^16.12.0",
     "graphql-subscriptions": "^3.0.0",
-    "mongoose": "^8.8.2",
-    "ts-jest": "^29.2.5",
+    "mongoose": "^9.2.1",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
-    "tsc-watch": "^6.2.1",
-    "typescript": "^5.7.2"
+    "tsc-watch": "^7.2.0",
+    "typescript": "^5.9.3"
   },
   "typings": "dist/index.d.ts",
   "typescript": {
