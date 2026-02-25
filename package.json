@@ -1,6 +1,6 @@
 {
   "name": "@ofload/graphql-mongodb-subscriptions",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A graphql-subscriptions PubSub Engine using MongoDB",
   "main": "dist/index.js",
   "repository": {
@@ -50,7 +50,7 @@
   },
   "peerDependencies": {
     "graphql-subscriptions": "^3.0.0",
-    "mongodb": "^7.0.0"
+    "mongodb": "^9.2.1"
   },
   "devDependencies": {
     "@types/graphql": "^14.5.0",
