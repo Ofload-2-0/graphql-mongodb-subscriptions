@@ -110,5 +110,4 @@ export class PubSubAsyncIterator<T> implements AsyncIterableIterator<T> {
       this.pubsub.unsubscribe(subscriptionId);
     }
   }
-
 }

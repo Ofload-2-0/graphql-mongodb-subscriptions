@@ -106,7 +106,7 @@ export class MongodbPubSub implements PubSubEngine {
       throw new Error(`There is no subscription of id "${subId}"`);
     }
 
-    subscription.unsubscribe(triggerName);
+    subscription.unsubscribe();
 
     if (refs.size === 1) {
       this.subsRefsMap.delete(triggerName);
