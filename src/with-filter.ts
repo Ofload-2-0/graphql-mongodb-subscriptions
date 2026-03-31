@@ -4,21 +4,31 @@ export const withFilter = (asyncIteratorFn: () => AsyncIterableIterator<any>, fi
   return (rootValue: any, args: any, context: any, info: any): AsyncIterator<any> => {
     const asyncIterator = asyncIteratorFn();
 
-    const getNextPromise = () => {
-      return asyncIterator
-        .next()
-        .then(payload => Promise.all([
-          payload,
-          Promise.resolve(filterFn(payload.value, args, context, info)).catch(() => false),
-        ]))
-        .then(([payload, filterResult]) => {
-          if (filterResult === true) {
-            return payload;
-          }
+    const getNextPromise = (): Promise<IteratorResult<any>> => {
+      return new Promise((resolve, reject) => {
+        const inner = () => {
+          asyncIterator
+            .next()
+            .then((payload) => {
+              if (payload.done === true) {
+                resolve(payload);
+                return;
+              }
+              Promise.resolve(filterFn(payload.value, args, context, info))
+                .catch(() => false)
+                .then((filterResult) => {
+                  if (filterResult === true) {
+                    resolve(payload);
+                    return;
+                  }
+                  inner();
+                });
+            })
+            .catch(reject);
+        };
 
-          // Skip the current value and wait for the next one
-          return getNextPromise();
-        });
+        inner();
+      });
     };
 
     return {
